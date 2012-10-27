@@ -125,7 +125,7 @@ cl.on('stanza', function(stanza) {
     }
 
     if (message.indexOf('!version') !== -1) {
-        cl.send(new xmpp.Element('message', params).c('body').t('EastGate: watcherbot '+version));
+        cl.send(new xmpp.Element('message', params).c('body').t(room_nick+': watcherbot '+version));
     }
 
     // Look for messages like "!weather 94085"

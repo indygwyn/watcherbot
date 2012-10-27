@@ -180,12 +180,12 @@ cl.on('stanza', function(stanza) {
     if (message.indexOf('!status') !== -1) {
         var exec = require('child_process').exec;
         exec('/opt/icinga/bin/icingastats  | grep -e "Services Ok" -e "Hosts Up" | sed "s/       / /g"', function(error, stdout, stderr) {
-            cl.send(new xmpp.Element('message', params).c('body').t('EastGate\n' + stdout + weburl));
+            cl.send(new xmpp.Element('message', params).c('body').t(room_nick+'\n' + stdout + weburl));
         });
     }
 
     if (message.indexOf('!url') !== -1) {
-        cl.send(new xmpp.Element('message', params).c('body').t('EastGate\n' + weburl));
+        cl.send(new xmpp.Element('message', params).c('body').t(room_nick+'\n' + weburl));
     }
 
     if (message.indexOf('!psy') !== -1) {
@@ -223,7 +223,7 @@ cl.on('stanza', function(stanza) {
 
           ping.on('exit', function(data) {
             cl.send(new xmpp.Element('message', params).c('body').t(
-                'EastGate - ' + pinghost + ' ping statistics\n' +
+                room_nick + ' - ' + pinghost + ' ping statistics\n' +
                 data.sent + ' packets transmitted, ' + data.recieved + ' received,  ' +  data.loss + ' packet loss, time ' +  data.time + 'ms')
             );
             return util.log(util.inspect(data));

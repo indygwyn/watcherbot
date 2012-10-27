@@ -1,0 +1,11 @@
+{
+  "name": "watcherbot",
+  "version" : "0.2.1",
+  "description": "Report on watcher activities via XMPP",
+  "author": "Thomas W. Holt Jr. <twh@sinewavetech.com>",
+  "dependencies": {
+    "node-xmpp": ">= 0.3.2",
+    "ping-wrapper2": ">= 0.0.1",
+    "request": ">= 2.11.4"
+  }
+}

@@ -24,6 +24,7 @@ var jid = nconf.get('xmpp.jid'),
     room_nick = nconf.get('xmpp.mucnick'),
     room_passwd = nconf.get('xmpp.mucpass'),
     weburl = nconf.get('watcher.icinga'),
+    statscmd = nconf.get('watcher.statscmd'),
     botsocket = nconf.get('watcher.socket');
 
 // Create socket for alert data to be sent to MUC
@@ -179,7 +180,7 @@ cl.on('stanza', function(stanza) {
 
     if (message.indexOf('!status') !== -1) {
         var exec = require('child_process').exec;
-        exec('/opt/icinga/bin/icingastats  | grep -e "Services Ok" -e "Hosts Up" | sed "s/       / /g"', function(error, stdout, stderr) {
+        exec(statscmd + ' | grep -e "Services Ok" -e "Hosts Up" | sed "s/       / /g"', function(error, stdout, stderr) {
             cl.send(new xmpp.Element('message', params).c('body').t(room_nick+'\n' + stdout + weburl));
         });
     }

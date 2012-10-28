@@ -23,7 +23,7 @@ var jid = nconf.get('xmpp.jid'),
     room_jid = nconf.get('xmpp.muc'),
     room_nick = nconf.get('xmpp.mucnick'),
     room_passwd = nconf.get('xmpp.mucpass'),
-    weburl = nconf.get('watcher.observium'),
+    weburl = nconf.get('watcher.icinga'),
     botsocket = nconf.get('watcher.socket');
 
 // Create socket for alert data to be sent to MUC

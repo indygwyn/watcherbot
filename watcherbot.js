@@ -5,12 +5,15 @@ var version = '0.2.1',
     net = require('net'),
     util = require('util'),
     nconf = require('nconf'),
+    moment = require('moment'),
     xmpp = require('node-xmpp'),
     request = require('request'),
-    Ping = require('ping-wrapper2');
+    humanize = require('humanize'),
+    ping = require('ping-wrapper2'),
     exec = require('child_process').exec,
+    random = require('underscore').random,
     hostnamearray = os.hostname().split('.'),
-     hostname = hostnamearray[0];
+    hostname = hostnamearray[0];
 
 nconf.argv()
     .env()
@@ -163,16 +166,31 @@ cl.on('stanza', function(stanza) {
             "Help me if you can, I'm feeling down",
             "Help me, get my feet back on the ground",
             ]
-        cl.send(new xmpp.Element('message', params).c('body').t(helps[randomInteger(0, helps.length)]));
+        cl.send(new xmpp.Element('message', params).c('body').t(helps[_.random(0, helps.length)]));
     }
 
     if (message.indexOf('!uptime') !== -1) {
-        var loadavg = os.loadavg();
+        var loadavg = os.loadavg(),
+            uptime = os.uptime(),
+            upstring = '';
+        var years = moment.duration(uptime,'seconds').years(),
+            months = moment.duration(uptime,'seconds').months(),
+            days = moment.duration(uptime,'seconds').days(),
+            hours = moment.duration(uptime,'seconds').hours(),
+            minutes = moment.duration(uptime,'seconds').minutes(),
+            seconds = moment.duration(uptime,'seconds').seconds();
+
+        if (years !== 0) upstring += years + ' years ';
+        if (months !== 0) upstring += months + ' months ';
+        if (days !== 0) upstring += days + ' days ';
+        if (hours !== 0) upstring += hours + ' hours ';
+        if (minutes !== 0) upstring += minutes + ' minutes ';
+        if (seconds !== 0) upstring += seconds + ' seconds';
 
         cl.send(new xmpp.Element('message', params).c('body').t(
-            hostname + " " + secondsToUptime(os.uptime()) +
+            hostname + " " + upstring +
             "\nloadavg: " + loadavg[0].toFixed(2) + " " + loadavg[1].toFixed(2) + " " + loadavg[2].toFixed(2) +
-            "\nmem: " + bytesToSize(os.totalmem()) + "/" + bytesToSize(os.freemem())
+            "\nmem: " + humanize.filesize(os.totalmem()) + "/" + humanize.filesize(os.freemem())
         ));
     }
 
@@ -200,7 +218,7 @@ cl.on('stanza', function(stanza) {
             "http://xkcd.com/149/",
             "http://xkcd.com/208/",
         ]
-        cl.send(new xmpp.Element('message', params).c('body').t(helps[randomInteger(0, helps.length)]));
+        cl.send(new xmpp.Element('message', params).c('body').t(helps[random(0, helps.length)]));
     }
 
     if (message.indexOf('!ping') !== -1) {
@@ -210,7 +228,7 @@ cl.on('stanza', function(stanza) {
         } else {
             var pinghost = 'google.com';
         }
-          var ping = new Ping(pinghost);
+          var ping = new ping(pinghost);
 
         util.log('Pinging ' + pinghost);
 
@@ -228,22 +246,3 @@ cl.on('stanza', function(stanza) {
     }
 });
 
-function randomInteger(low, high) {
-    return Math.floor(low + Math.random() * (high - low))
-}
-
-function bytesToSize(bytes) {
-    var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-    if (bytes == 0) return 'n/a';
-    var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
-    if (i == 0) return bytes + ' ' + sizes[i];
-    return (bytes / Math.pow(1024, i)).toFixed(1) + ' ' + sizes[i];
-};
-
-function secondsToUptime(seconds) {
-    var numdays = Math.floor(seconds / 86400);
-    var numhours = Math.floor((seconds % 86400) / 3600);
-    var numminutes = Math.floor(((seconds % 86400) % 3600) / 60);
-    var numseconds = ((seconds % 86400) % 3600) % 60;
-    return numdays + " days " + numhours + ":" + numminutes;
-}

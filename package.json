@@ -8,6 +8,7 @@
     "ping-wrapper2": ">= 0.0.1",
     "request": ">= 2.11.4"
     "humanize": ">= 0.0.6"
+    "underscore": ">= 1.4.2"
     "moment": ">= 1.7.2"
     "nconf": ">= 0.6.4"
   }

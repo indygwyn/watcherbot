@@ -177,8 +177,7 @@ cl.on('stanza', function(stanza) {
             months = moment.duration(uptime,'seconds').months(),
             days = moment.duration(uptime,'seconds').days(),
             hours = moment.duration(uptime,'seconds').hours(),
-            minutes = moment.duration(uptime,'seconds').minutes(),
-            seconds = moment.duration(uptime,'seconds').seconds();
+            minutes = moment.duration(uptime,'seconds').minutes();
 
         if (years !== 0) upstring += years + ' years ';
         if (months !== 0) upstring += months + ' months ';

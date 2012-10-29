@@ -1,21 +1,21 @@
-var os = require('os'),
+var version = '0.2.1',
+    os = require('os'),
     fs = require('fs'),
     sys = require('sys'),
     net = require('net'),
     util = require('util'),
     nconf = require('nconf'),
     xmpp = require('node-xmpp'),
-    request = require('request');
-
-var hostnamearray = os.hostname().split('.'),
+    request = require('request'),
+    Ping = require('ping-wrapper2');
+    exec = require('child_process').exec,
+    hostnamearray = os.hostname().split('.'),
      hostname = hostnamearray[0];
 
 nconf.argv()
     .env()
     .file({ file: 'config.json'}
 );
-
-var version = '0.2.1';
 
 var jid = nconf.get('xmpp.jid'),
     password = nconf.get('xmpp.pass'),
@@ -167,8 +167,6 @@ cl.on('stanza', function(stanza) {
     }
 
     if (message.indexOf('!uptime') !== -1) {
-        var hostnamearray=os.hostname().split('.');
-        var hostname=hostnamearray[0];
         var loadavg = os.loadavg();
 
         cl.send(new xmpp.Element('message', params).c('body').t(
@@ -179,7 +177,6 @@ cl.on('stanza', function(stanza) {
     }
 
     if (message.indexOf('!status') !== -1) {
-        var exec = require('child_process').exec;
         exec(statscmd + ' | grep -e "Services Ok" -e "Hosts Up" | sed "s/       / /g"', function(error, stdout, stderr) {
             cl.send(new xmpp.Element('message', params).c('body').t(room_nick+'\n' + stdout + weburl));
         });
@@ -207,7 +204,6 @@ cl.on('stanza', function(stanza) {
     }
 
     if (message.indexOf('!ping') !== -1) {
-        var Ping = require('ping-wrapper2');
         var splits = message.split(" ");
         if (splits.length == 2) {
             var pinghost = splits[1];

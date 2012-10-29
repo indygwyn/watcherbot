@@ -184,7 +184,6 @@ cl.on('stanza', function(stanza) {
         if (days !== 0) upstring += days + ' days ';
         if (hours !== 0) upstring += hours + ' hours ';
         if (minutes !== 0) upstring += minutes + ' minutes ';
-        if (seconds !== 0) upstring += seconds + ' seconds';
 
         cl.send(new xmpp.Element('message', params).c('body').t(
             hostname + " " + upstring +

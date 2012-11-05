@@ -44,7 +44,7 @@ fs.stat(botsocket, function (err) {
             var params = {};
             params.to = room_jid;
             params.type = 'groupchat';
-            cl.send(new xmpp.Element('message', params).c('body').t(room_jid + ': ' + chunk));
+            cl.send(new xmpp.Element('message', params).c('body').t(room_nick + ': ' + chunk));
         });
     });
     localsocket.listen(botsocket, function() { //'listening' listener

@@ -1,15 +1,22 @@
 {
   "name": "watcherbot",
-  "version" : "0.2.1",
+  "version" : "0.3.0",
   "description": "Report on watcher activities via XMPP",
   "author": "Thomas W. Holt Jr. <twh@sinewavetech.com>",
+  "scripts": {
+    "start": "node ./bot.js",
+    "predeploy": "echo This will be run before deploying the app",
+    "postdeploy": "echo This will be run after deploying the app"
+  },
+ "repository": {
+    "type": "git",
+    "url": "https://github.com/indygwyn/watcherbot.git"
+  },
   "dependencies": {
-    "node-xmpp": ">= 0.3.2",
-    "ping-wrapper2": ">= 0.0.1",
-    "request": ">= 2.11.4",
-    "humanize": ">= 0.0.6",
-    "underscore": ">= 1.4.2",
-    "moment": ">= 1.7.2",
-    "nconf": ">= 0.6.4"
+    "simple-xmpp": "*",
+    "humanize": "*",
+    "moment": "*",
+    "supervisor": "*",
+    "forever": "*"
   }
 }

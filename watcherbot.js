@@ -91,11 +91,6 @@ fs.stat(config.botsock, function (err) {
 
 xmpp.on('groupchat', function(conference, from, message, stamp) {
     if(from != config.nick)
-        if (message.indexOf('!reload') !== -1) {
-            xmpp.send(conference, pretext + 'Exiting on ' + os.hostname(),true);
-            process.exit();
-        }
-
         if (message.indexOf('!hello') !== -1) {
             xmpp.send(conference, pretext + 'Hello from ' + os.hostname() , true);
         }
